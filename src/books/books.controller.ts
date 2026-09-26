@@ -22,12 +22,19 @@ export class BooksController {
 
   @Get()
   findAll() {
-    return this.booksService.findAll();
+    return this.booksService.findAll().map((book) => ({
+      id: book.id,
+      title: book.title,
+    }));
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.booksService.findById(+id);
+    const book = this.booksService.findById(+id);
+    return {
+      id: book.id,
+      title: book.title,
+    };
   }
 
   @Patch(':id')

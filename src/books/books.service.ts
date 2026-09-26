@@ -1,8 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksRepository } from './books.repository';
 import { Book } from './entities/book.entity';
+import {
+  EntityAlreadyExistsError,
+  EntityNotFoundError,
+} from 'src/shared/errors';
 
 @Injectable()
 export class BooksService {
@@ -10,7 +18,14 @@ export class BooksService {
 
   create(createBookDto: CreateBookDto): void {
     const createBookInput = createBookDto;
-    this.booksRepository.save(createBookInput);
+    try {
+      this.booksRepository.save(createBookInput);
+    } catch (error) {
+      if (error instanceof EntityAlreadyExistsError) {
+        throw new ConflictException('book already exists');
+      }
+      throw error;
+    }
   }
 
   findAll(): Book[] {
@@ -18,7 +33,14 @@ export class BooksService {
   }
 
   findById(id: number): Book {
-    return this.booksRepository.findById(id);
+    try {
+      return this.booksRepository.findById(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('book not found');
+      }
+      throw error;
+    }
   }
 
   update(id: number, updateBookDto: UpdateBookDto): void {
@@ -26,6 +48,13 @@ export class BooksService {
   }
 
   remove(id: number) {
-    this.booksRepository.delete(id);
+    try {
+      this.booksRepository.delete(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('book not found');
+      }
+      throw error;
+    }
   }
 }

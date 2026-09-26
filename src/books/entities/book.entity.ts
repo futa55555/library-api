@@ -1,6 +1,6 @@
 export class Book {
   id: number;
-  _title: string;
+  private _title: string;
 
   constructor(id: number, title: string) {
     this.id = id;
