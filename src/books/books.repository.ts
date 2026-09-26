@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Book } from './entities/book.entity';
-import { CreateBookDto } from './dto/create-book.dto';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
 } from 'src/shared/errors';
+import { Author } from 'src/authors/entities/author.entity';
+import { Publisher } from 'src/publishers/entities/publisher.entity';
 
-type CreateBookInput = CreateBookDto;
+type CreateBookInput = {
+  title: string;
+  author: Author;
+  publisher: Publisher;
+};
 
 @Injectable()
 export class BooksRepository {

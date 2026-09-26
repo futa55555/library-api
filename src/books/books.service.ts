@@ -10,13 +10,29 @@ import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
 } from 'src/shared/errors';
+import { AuthorsService } from 'src/authors/authors.service';
+import { PublishersService } from 'src/publishers/publishers.service';
 
 @Injectable()
 export class BooksService {
-  constructor(private readonly booksRepository: BooksRepository) {}
+  constructor(
+    private readonly booksRepository: BooksRepository,
+    private readonly authorsService: AuthorsService,
+    private readonly publishersService: PublishersService,
+  ) {}
 
   create(createBookDto: CreateBookDto): Book {
-    const createBookInput = createBookDto;
+    const author = this.authorsService.findById(createBookDto.authorId);
+    const publisher = this.publishersService.findById(
+      createBookDto.publisherId,
+    );
+
+    const createBookInput = {
+      title: createBookDto.title,
+      author: author,
+      publisher: publisher,
+    };
+
     try {
       return this.booksRepository.save(createBookInput);
     } catch (error) {
