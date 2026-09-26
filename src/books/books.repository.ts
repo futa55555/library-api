@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
 } from 'src/shared/errors';
 
 type CreateBookInput = CreateBookDto;
-type UpdateBookInput = UpdateBookDto;
 
 @Injectable()
 export class BooksRepository {
@@ -20,7 +18,12 @@ export class BooksRepository {
       throw new EntityAlreadyExistsError('book already exists');
     }
 
-    const book = new Book(this.nextId++, createBookInput.title);
+    const book = new Book(
+      this.nextId++,
+      createBookInput.title,
+      createBookInput.author,
+      createBookInput.publisher,
+    );
     this.books.push(book);
   }
 
@@ -38,11 +41,6 @@ export class BooksRepository {
 
   exist(createBookInput: CreateBookInput): boolean {
     return this.books.some((book) => book.title === createBookInput.title);
-  }
-
-  update(id: number, updateBookInput: UpdateBookInput): void {
-    const book = this.findById(id);
-    book.updateTitle(updateBookInput.title);
   }
 
   delete(id: number): void {

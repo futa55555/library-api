@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksRepository } from './books.repository';
 import { Book } from './entities/book.entity';
 import {
@@ -41,10 +40,6 @@ export class BooksService {
       }
       throw error;
     }
-  }
-
-  update(id: number, updateBookDto: UpdateBookDto): void {
-    this.booksRepository.update(id, updateBookDto);
   }
 
   remove(id: number) {
