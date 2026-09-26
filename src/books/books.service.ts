@@ -9,9 +9,9 @@ import { Book } from './entities/book.entity';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
-import { AuthorsService } from 'src/authors/authors.service';
-import { PublishersService } from 'src/publishers/publishers.service';
+} from '../shared/errors';
+import { AuthorsService } from '../authors/authors.service';
+import { PublishersService } from '../publishers/publishers.service';
 
 @Injectable()
 export class BooksService {

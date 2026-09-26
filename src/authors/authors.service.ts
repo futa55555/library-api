@@ -8,7 +8,7 @@ import { AuthorsRepository } from './authors.repository';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
+} from '../shared/errors';
 import { Author } from './entities/author.entity';
 
 @Injectable()

@@ -8,7 +8,7 @@ import { PublishersRepository } from './publishers.repository';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
+} from '../shared/errors';
 import { Publisher } from './entities/publisher.entity';
 
 @Injectable()

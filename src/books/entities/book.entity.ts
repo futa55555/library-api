@@ -1,5 +1,5 @@
-import { Author } from 'src/authors/entities/author.entity';
-import { Publisher } from 'src/publishers/entities/publisher.entity';
+import { Author } from '../../authors/entities/author.entity';
+import { Publisher } from '../../publishers/entities/publisher.entity';
 
 export class Book {
   private _id: number;

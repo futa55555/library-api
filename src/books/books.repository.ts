@@ -3,9 +3,9 @@ import { Book } from './entities/book.entity';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
-import { Author } from 'src/authors/entities/author.entity';
-import { Publisher } from 'src/publishers/entities/publisher.entity';
+} from '../shared/errors';
+import { Author } from '../authors/entities/author.entity';
+import { Publisher } from '../publishers/entities/publisher.entity';
 
 type CreateBookInput = {
   title: string;

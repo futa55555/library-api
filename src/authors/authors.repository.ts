@@ -4,7 +4,7 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
+} from '../shared/errors';
 
 type CreateAuthorInput = CreateAuthorDto;
 

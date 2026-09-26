@@ -4,7 +4,7 @@ import { Publisher } from './entities/publisher.entity';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
-} from 'src/shared/errors';
+} from '../shared/errors';
 
 type CreatePublisherInput = CreatePublisherDto;
 
