@@ -16,7 +16,11 @@ export class AuthorsController {
 
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorsService.create(createAuthorDto);
+    const author = this.authorsService.create(createAuthorDto);
+    return {
+      id: author.id,
+      name: author.name,
+    };
   }
 
   @Get()

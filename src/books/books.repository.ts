@@ -13,7 +13,7 @@ export class BooksRepository {
   private readonly books: Book[] = [];
   private nextId: number = 1;
 
-  save(createBookInput: CreateBookInput): void {
+  save(createBookInput: CreateBookInput): Book {
     if (this.exist(createBookInput)) {
       throw new EntityAlreadyExistsError('book already exists');
     }
@@ -24,6 +24,7 @@ export class BooksRepository {
       createBookInput.publisher,
     );
     this.books.push(book);
+    return book;
   }
 
   findAll(): Book[] {

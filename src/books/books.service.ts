@@ -15,10 +15,10 @@ import {
 export class BooksService {
   constructor(private readonly booksRepository: BooksRepository) {}
 
-  create(createBookDto: CreateBookDto): void {
+  create(createBookDto: CreateBookDto): Book {
     const createBookInput = createBookDto;
     try {
-      this.booksRepository.save(createBookInput);
+      return this.booksRepository.save(createBookInput);
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('book already exists');

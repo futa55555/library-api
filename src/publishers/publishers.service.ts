@@ -15,10 +15,10 @@ import { Publisher } from './entities/publisher.entity';
 export class PublishersService {
   constructor(private readonly publishersRepository: PublishersRepository) {}
 
-  create(createPublisherDto: CreatePublisherDto): void {
+  create(createPublisherDto: CreatePublisherDto): Publisher {
     const createAuthorInput = createPublisherDto;
     try {
-      this.publishersRepository.save(createAuthorInput);
+      return this.publishersRepository.save(createAuthorInput);
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('publisher already exists');

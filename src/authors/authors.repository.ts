@@ -13,12 +13,13 @@ export class AuthorsRepository {
   private readonly authors: Author[] = [];
   private nextId: number = 1;
 
-  save(createAuthorInput: CreateAuthorInput): void {
+  save(createAuthorInput: CreateAuthorInput): Author {
     if (this.exists(createAuthorInput)) {
       throw new EntityAlreadyExistsError('author already exists');
     }
     const author = new Author(this.nextId++, createAuthorInput.name);
     this.authors.push(author);
+    return author;
   }
 
   findAll(): Author[] {

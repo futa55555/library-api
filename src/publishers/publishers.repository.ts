@@ -13,12 +13,13 @@ export class PublishersRepository {
   private readonly publishers: Publisher[] = [];
   private nextId: number = 1;
 
-  save(createPublisherInput: CreatePublisherInput): void {
+  save(createPublisherInput: CreatePublisherInput): Publisher {
     if (this.exists(createPublisherInput)) {
       throw new EntityAlreadyExistsError('publisher already exists');
     }
     const publisher = new Publisher(this.nextId++, createPublisherInput.name);
     this.publishers.push(publisher);
+    return publisher;
   }
 
   findAll(): Publisher[] {

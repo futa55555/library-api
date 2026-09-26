@@ -16,7 +16,11 @@ export class PublishersController {
 
   @Post()
   create(@Body() createPublisherDto: CreatePublisherDto) {
-    return this.publishersService.create(createPublisherDto);
+    const publisher = this.publishersService.create(createPublisherDto);
+    return {
+      id: publisher.id,
+      name: publisher.name,
+    };
   }
 
   @Get()

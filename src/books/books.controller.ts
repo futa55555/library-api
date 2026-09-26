@@ -16,7 +16,13 @@ export class BooksController {
 
   @Post()
   create(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.create(createBookDto);
+    const book = this.booksService.create(createBookDto);
+    return {
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      publisher: book.publisher,
+    };
   }
 
   @Get()
