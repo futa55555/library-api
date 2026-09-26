@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { UpdateAuthorDto } from './dto/update-author.dto';
+import { AuthorsRepository } from './authors.repository';
+import {
+  EntityAlreadyExistsError,
+  EntityNotFoundError,
+} from 'src/shared/errors';
+import { Author } from './entities/author.entity';
 
 @Injectable()
 export class AuthorsService {
-  create(createAuthorDto: CreateAuthorDto) {
-    return 'This action adds a new author';
+  constructor(private readonly authorsRepository: AuthorsRepository) {}
+
+  create(createAuthorDto: CreateAuthorDto): void {
+    const createAuthorInput = createAuthorDto;
+    try {
+      this.authorsRepository.save(createAuthorInput);
+    } catch (error) {
+      if (error instanceof EntityAlreadyExistsError) {
+        throw new ConflictException('author already exists');
+      }
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all authors`;
+  findAll(): Author[] {
+    return this.authorsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} author`;
-  }
-
-  update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return `This action updates a #${id} author`;
+  findById(id: number): Author {
+    try {
+      return this.authorsRepository.findById(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('author not found');
+      }
+      throw error;
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} author`;
+    try {
+      this.authorsRepository.delete(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('author not found');
+      }
+      throw error;
+    }
   }
 }

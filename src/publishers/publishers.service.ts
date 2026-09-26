@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
-import { UpdatePublisherDto } from './dto/update-publisher.dto';
+import { PublishersRepository } from './publishers.repository';
+import {
+  EntityAlreadyExistsError,
+  EntityNotFoundError,
+} from 'src/shared/errors';
+import { Publisher } from './entities/publisher.entity';
 
 @Injectable()
 export class PublishersService {
-  create(createPublisherDto: CreatePublisherDto) {
-    return 'This action adds a new publisher';
+  constructor(private readonly publishersRepository: PublishersRepository) {}
+
+  create(createPublisherDto: CreatePublisherDto): void {
+    const createAuthorInput = createPublisherDto;
+    try {
+      this.publishersRepository.save(createAuthorInput);
+    } catch (error) {
+      if (error instanceof EntityAlreadyExistsError) {
+        throw new ConflictException('publisher already exists');
+      }
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all publishers`;
+  findAll(): Publisher[] {
+    return this.publishersRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} publisher`;
+  findById(id: number): Publisher {
+    try {
+      return this.publishersRepository.findById(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('publisher not found');
+      }
+      throw error;
+    }
   }
 
-  update(id: number, updatePublisherDto: UpdatePublisherDto) {
-    return `This action updates a #${id} publisher`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} publisher`;
+  remove(id: number): void {
+    try {
+      this.publishersRepository.delete(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('publisher not found');
+      }
+      throw error;
+    }
   }
 }

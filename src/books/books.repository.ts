@@ -17,7 +17,6 @@ export class BooksRepository {
     if (this.exist(createBookInput)) {
       throw new EntityAlreadyExistsError('book already exists');
     }
-
     const book = new Book(
       this.nextId++,
       createBookInput.title,
@@ -32,11 +31,11 @@ export class BooksRepository {
   }
 
   findById(id: number): Book {
-    const found = this.books.find((book) => book.id === id);
-    if (!found) {
+    const book = this.books.find((book) => book.id === id);
+    if (!book) {
       throw new EntityNotFoundError('book not found');
     }
-    return found;
+    return book;
   }
 
   exist(createBookInput: CreateBookInput): boolean {
