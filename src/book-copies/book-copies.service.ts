@@ -22,7 +22,7 @@ export class BookCopiesService {
       book,
     };
 
-    return this.bookCopiesRepository.save(createBookCopyInput);
+    return this.bookCopiesRepository.create(createBookCopyInput);
   }
 
   findAll(): BookCopy[] {
@@ -40,7 +40,7 @@ export class BookCopiesService {
     }
   }
 
-  remove(id: number): void {
+  delete(id: number): void {
     try {
       this.bookCopiesRepository.delete(id);
     } catch (error) {

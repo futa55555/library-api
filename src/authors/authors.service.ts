@@ -18,7 +18,7 @@ export class AuthorsService {
   create(createAuthorDto: CreateAuthorDto): Author {
     const createAuthorInput = createAuthorDto;
     try {
-      return this.authorsRepository.save(createAuthorInput);
+      return this.authorsRepository.create(createAuthorInput);
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('author already exists');
@@ -42,7 +42,7 @@ export class AuthorsService {
     }
   }
 
-  remove(id: number) {
+  delete(id: number) {
     try {
       this.authorsRepository.delete(id);
     } catch (error) {

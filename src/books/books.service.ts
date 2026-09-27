@@ -34,7 +34,7 @@ export class BooksService {
     };
 
     try {
-      return this.booksRepository.save(createBookInput);
+      return this.booksRepository.create(createBookInput);
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('book already exists');
@@ -58,7 +58,7 @@ export class BooksService {
     }
   }
 
-  remove(id: number) {
+  delete(id: number) {
     try {
       this.booksRepository.delete(id);
     } catch (error) {

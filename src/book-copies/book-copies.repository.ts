@@ -12,7 +12,7 @@ export class BookCopiesRepository {
   private readonly bookCopies: BookCopy[] = [];
   private nextId: number = 1;
 
-  save(createBookCopyInput: CreateBookCopyInput): BookCopy {
+  create(createBookCopyInput: CreateBookCopyInput): BookCopy {
     const bookCopy = new BookCopy(this.nextId++, createBookCopyInput.book);
     this.bookCopies.push(bookCopy);
     return bookCopy;

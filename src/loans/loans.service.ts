@@ -20,7 +20,7 @@ export class LoansService {
     return `This action updates a #${id} loan`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} loan`;
+  delete(id: number) {
+    return `This action deletes a #${id} loan`;
   }
 }

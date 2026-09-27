@@ -18,7 +18,7 @@ export class BooksRepository {
   private readonly books: Book[] = [];
   private nextId: number = 1;
 
-  save(createBookInput: CreateBookInput): Book {
+  create(createBookInput: CreateBookInput): Book {
     if (this.exist(createBookInput)) {
       throw new EntityAlreadyExistsError('book already exists');
     }

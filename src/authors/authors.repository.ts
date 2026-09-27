@@ -13,7 +13,7 @@ export class AuthorsRepository {
   private readonly authors: Author[] = [];
   private nextId: number = 1;
 
-  save(createAuthorInput: CreateAuthorInput): Author {
+  create(createAuthorInput: CreateAuthorInput): Author {
     if (this.exists(createAuthorInput)) {
       throw new EntityAlreadyExistsError('author already exists');
     }

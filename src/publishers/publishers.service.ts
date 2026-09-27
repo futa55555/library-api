@@ -18,7 +18,7 @@ export class PublishersService {
   create(createPublisherDto: CreatePublisherDto): Publisher {
     const createAuthorInput = createPublisherDto;
     try {
-      return this.publishersRepository.save(createAuthorInput);
+      return this.publishersRepository.create(createAuthorInput);
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('publisher already exists');
@@ -42,7 +42,7 @@ export class PublishersService {
     }
   }
 
-  remove(id: number): void {
+  delete(id: number): void {
     try {
       this.publishersRepository.delete(id);
     } catch (error) {

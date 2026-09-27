@@ -73,7 +73,7 @@ export class AuthorsController {
     status: 404,
     description: '指定したIDの著者は登録されていない',
   })
-  remove(@Param('id') id: string) {
-    return this.authorsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.authorsService.delete(+id);
   }
 }

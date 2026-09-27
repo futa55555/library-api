@@ -73,7 +73,7 @@ export class PublishersController {
     status: 404,
     description: '指定したIDの出版社は登録されていない',
   })
-  remove(@Param('id') id: string) {
-    return this.publishersService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.publishersService.delete(+id);
   }
 }

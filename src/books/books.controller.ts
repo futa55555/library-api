@@ -74,7 +74,7 @@ export class BooksController {
   })
   @ApiResponse({ status: 204, description: '削除成功' })
   @ApiResponse({ status: 404, description: '指定したIDの本は登録されていない' })
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.booksService.delete(+id);
   }
 }

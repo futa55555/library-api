@@ -62,7 +62,7 @@ export class BookCopiesController {
     status: 404,
     description: '指定したIDの蔵書は登録されていない',
   })
-  remove(@Param('id') id: string) {
-    return this.bookCopiesService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.bookCopiesService.delete(+id);
   }
 }

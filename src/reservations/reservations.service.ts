@@ -20,7 +20,7 @@ export class ReservationsService {
     return `This action updates a #${id} reservation`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  delete(id: number) {
+    return `This action deletes a #${id} reservation`;
   }
 }

@@ -39,7 +39,7 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationsService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.reservationsService.delete(+id);
   }
 }

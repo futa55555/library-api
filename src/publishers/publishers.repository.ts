@@ -13,7 +13,7 @@ export class PublishersRepository {
   private readonly publishers: Publisher[] = [];
   private nextId: number = 1;
 
-  save(createPublisherInput: CreatePublisherInput): Publisher {
+  create(createPublisherInput: CreatePublisherInput): Publisher {
     if (this.exists(createPublisherInput)) {
       throw new EntityAlreadyExistsError('publisher already exists');
     }
