@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Reservation } from './entities/reservation.entity';
 import { User } from '../users/entities/user.entity';
 import { Book } from '../books/entities/book.entity';
-import { EntityNotFoundError } from '../shared/errors';
+import {
+  EntityAlreadyExistsError,
+  EntityNotFoundError,
+} from '../shared/errors';
 
 export type CreateReservationInput = {
   user: User;
@@ -15,6 +18,9 @@ export class ReservationsRepository {
   private nextId: number = 1;
 
   create(createReservationInput: CreateReservationInput): Reservation {
+    if (this.exists(createReservationInput)) {
+      throw new EntityAlreadyExistsError('reservation already exists');
+    }
     const reservation = new Reservation(
       this.nextId++,
       createReservationInput.user,

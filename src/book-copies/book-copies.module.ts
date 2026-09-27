@@ -5,6 +5,7 @@ import { BookCopiesRepository } from './book-copies.repository';
 import { BooksModule } from '../books/books.module';
 
 @Module({
+  exports: [BookCopiesService],
   imports: [BooksModule],
   controllers: [BookCopiesController],
   providers: [BookCopiesService, BookCopiesRepository],
