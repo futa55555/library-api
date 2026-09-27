@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
-import { BooksRepository } from './books.repository';
+import { BooksRepository, CreateBookInput } from './books.repository';
 import { Book } from './entities/book.entity';
 import {
   EntityAlreadyExistsError,
@@ -27,10 +27,10 @@ export class BooksService {
       createBookDto.publisherId,
     );
 
-    const createBookInput = {
+    const createBookInput: CreateBookInput = {
       title: createBookDto.title,
-      author: author,
-      publisher: publisher,
+      author,
+      publisher,
     };
 
     try {

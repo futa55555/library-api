@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBookCopyDto } from './dto/create-book-copy.dto';
-import { UpdateBookCopyDto } from './dto/update-book-copy.dto';
+import {
+  BookCopiesRepository,
+  CreateBookCopyInput,
+} from './book-copies.repository';
+import { EntityNotFoundError } from '../shared/errors';
+import { BookCopy } from './entities/book-copy.entity';
+import { BooksService } from '../books/books.service';
 
 @Injectable()
 export class BookCopiesService {
-  create(createBookCopyDto: CreateBookCopyDto) {
-    return 'This action adds a new bookCopy';
+  constructor(
+    private readonly bookCopiesRepository: BookCopiesRepository,
+    private readonly booksService: BooksService,
+  ) {}
+
+  create(createBookCopyDto: CreateBookCopyDto): BookCopy {
+    const book = this.booksService.findById(createBookCopyDto.bookId);
+
+    const createBookCopyInput: CreateBookCopyInput = {
+      book,
+    };
+
+    return this.bookCopiesRepository.save(createBookCopyInput);
   }
 
-  findAll() {
-    return `This action returns all bookCopies`;
+  findAll(): BookCopy[] {
+    return this.bookCopiesRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookCopy`;
+  findById(id: number): BookCopy {
+    try {
+      return this.bookCopiesRepository.findById(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('book copy not found');
+      }
+      throw error;
+    }
   }
 
-  update(id: number, updateBookCopyDto: UpdateBookCopyDto) {
-    return `This action updates a #${id} bookCopy`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} bookCopy`;
+  remove(id: number): void {
+    try {
+      this.bookCopiesRepository.delete(id);
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('book copy not found');
+      }
+      throw error;
+    }
   }
 }

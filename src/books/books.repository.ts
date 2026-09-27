@@ -7,7 +7,7 @@ import {
 import { Author } from '../authors/entities/author.entity';
 import { Publisher } from '../publishers/entities/publisher.entity';
 
-type CreateBookInput = {
+export type CreateBookInput = {
   title: string;
   author: Author;
   publisher: Publisher;

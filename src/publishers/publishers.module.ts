@@ -4,8 +4,8 @@ import { PublishersController } from './publishers.controller';
 import { PublishersRepository } from './publishers.repository';
 
 @Module({
+  exports: [PublishersService],
   controllers: [PublishersController],
   providers: [PublishersService, PublishersRepository],
-  exports: [PublishersService],
 })
 export class PublishersModule {}

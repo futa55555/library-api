@@ -6,6 +6,7 @@ import { AuthorsModule } from '../authors/authors.module';
 import { PublishersModule } from '../publishers/publishers.module';
 
 @Module({
+  exports: [BooksService],
   imports: [AuthorsModule, PublishersModule],
   controllers: [BooksController],
   providers: [BooksService, BooksRepository],
