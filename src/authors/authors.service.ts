@@ -2,12 +2,14 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { AuthorsRepository } from './authors.repository';
 import {
   EntityAlreadyExistsError,
   EntityNotFoundError,
+  EntityUnprocessableError,
 } from '../shared/errors';
 import { Author } from './entities/author.entity';
 
@@ -22,6 +24,9 @@ export class AuthorsService {
     } catch (error) {
       if (error instanceof EntityAlreadyExistsError) {
         throw new ConflictException('author already exists');
+      }
+      if (error instanceof EntityUnprocessableError) {
+        throw new UnprocessableEntityException('name cannot be empty');
       }
       throw error;
     }
