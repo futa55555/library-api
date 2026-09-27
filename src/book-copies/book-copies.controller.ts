@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { BookCopiesService } from './book-copies.service';
 import { CreateBookCopyDto } from './dto/create-book-copy.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { BookCopy } from './entities/book-copy.entity';
 
 @Controller('book-copies')
 export class BookCopiesController {
@@ -10,15 +11,13 @@ export class BookCopiesController {
   @Post()
   @ApiOperation({
     summary: '蔵書を登録する',
-    description: '登録済みの本を指定して、実際に扱う蔵書を新規登録する',
+    description: '登録済みの本を指定して、蔵書を新規登録する',
   })
   @ApiResponse({ status: 201, description: '登録成功' })
+  @ApiResponse({ status: 404, description: '本が存在しない' })
   create(@Body() createBookCopyDto: CreateBookCopyDto) {
     const bookCopy = this.bookCopiesService.create(createBookCopyDto);
-    return {
-      id: bookCopy.id,
-      book: bookCopy.book,
-    };
+    return this.toResponse(bookCopy);
   }
 
   @Get()
@@ -28,10 +27,9 @@ export class BookCopiesController {
   })
   @ApiResponse({ status: 200, description: '取得成功' })
   findAll() {
-    return this.bookCopiesService.findAll().map((bookCopy) => ({
-      id: bookCopy.id,
-      book: bookCopy.book,
-    }));
+    return this.bookCopiesService
+      .findAll()
+      .map((bookCopy) => this.toResponse(bookCopy));
   }
 
   @Get(':id')
@@ -46,10 +44,7 @@ export class BookCopiesController {
   })
   findById(@Param('id') id: string) {
     const bookCopy = this.bookCopiesService.findById(+id);
-    return {
-      id: bookCopy.id,
-      book: bookCopy.book,
-    };
+    return this.toResponse(bookCopy);
   }
 
   @Delete(':id')
@@ -64,5 +59,12 @@ export class BookCopiesController {
   })
   delete(@Param('id') id: string) {
     return this.bookCopiesService.delete(+id);
+  }
+
+  private toResponse(bookCopy: BookCopy) {
+    return {
+      id: bookCopy.id,
+      book: bookCopy.book,
+    };
   }
 }

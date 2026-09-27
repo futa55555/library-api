@@ -10,6 +10,7 @@ import {
 import { PublishersService } from './publishers.service';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Publisher } from './entities/publisher.entity';
 
 @Controller('publishers')
 export class PublishersController {
@@ -25,10 +26,7 @@ export class PublishersController {
   @ApiResponse({ status: 422, description: '入力値が不正' })
   create(@Body() createPublisherDto: CreatePublisherDto) {
     const publisher = this.publishersService.create(createPublisherDto);
-    return {
-      id: publisher.id,
-      name: publisher.name,
-    };
+    return this.toResponse(publisher);
   }
 
   @Get()
@@ -38,10 +36,9 @@ export class PublishersController {
   })
   @ApiResponse({ status: 200, description: '取得成功' })
   findAll() {
-    return this.publishersService.findAll().map((publisher) => ({
-      id: publisher.id,
-      name: publisher.name,
-    }));
+    return this.publishersService
+      .findAll()
+      .map((publisher) => this.toResponse(publisher));
   }
 
   @Get(':id')
@@ -56,10 +53,7 @@ export class PublishersController {
   })
   findById(@Param('id') id: string) {
     const publisher = this.publishersService.findById(+id);
-    return {
-      id: publisher.id,
-      name: publisher.name,
-    };
+    return this.toResponse(publisher);
   }
 
   @Delete(':id')
@@ -75,5 +69,12 @@ export class PublishersController {
   })
   delete(@Param('id') id: string) {
     return this.publishersService.delete(+id);
+  }
+
+  private toResponse(publisher: Publisher) {
+    return {
+      id: publisher.id,
+      name: publisher.name,
+    };
   }
 }

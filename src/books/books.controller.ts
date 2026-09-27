@@ -10,6 +10,7 @@ import {
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Book } from './entities/book.entity';
 
 @Controller('books')
 export class BooksController {
@@ -26,12 +27,7 @@ export class BooksController {
   @ApiResponse({ status: 422, description: '入力値が不正' })
   create(@Body() createBookDto: CreateBookDto) {
     const book = this.booksService.create(createBookDto);
-    return {
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      publisher: book.publisher,
-    };
+    return this.toResponse(book);
   }
 
   @Get()
@@ -41,12 +37,7 @@ export class BooksController {
   })
   @ApiResponse({ status: 200, description: '取得成功' })
   findAll() {
-    return this.booksService.findAll().map((book) => ({
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      publisher: book.publisher,
-    }));
+    return this.booksService.findAll().map((book) => this.toResponse(book));
   }
 
   @Get(':id')
@@ -58,12 +49,7 @@ export class BooksController {
   @ApiResponse({ status: 404, description: '指定したIDの本は登録されていない' })
   findOne(@Param('id') id: string) {
     const book = this.booksService.findById(+id);
-    return {
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      publisher: book.publisher,
-    };
+    return this.toResponse(book);
   }
 
   @Delete(':id')
@@ -76,5 +62,14 @@ export class BooksController {
   @ApiResponse({ status: 404, description: '指定したIDの本は登録されていない' })
   delete(@Param('id') id: string) {
     return this.booksService.delete(+id);
+  }
+
+  private toResponse(book: Book) {
+    return {
+      id: book.id,
+      author: book.author,
+      publisher: book.publisher,
+      title: book.title,
+    };
   }
 }

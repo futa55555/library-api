@@ -10,6 +10,7 @@ import {
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Author } from './entities/author.entity';
 
 @Controller('authors')
 export class AuthorsController {
@@ -25,10 +26,7 @@ export class AuthorsController {
   @ApiResponse({ status: 422, description: '入力値が不正' })
   create(@Body() createAuthorDto: CreateAuthorDto) {
     const author = this.authorsService.create(createAuthorDto);
-    return {
-      id: author.id,
-      name: author.name,
-    };
+    return this.toResponse(author);
   }
 
   @Get()
@@ -38,10 +36,9 @@ export class AuthorsController {
   })
   @ApiResponse({ status: 200, description: '取得成功' })
   findAll() {
-    return this.authorsService.findAll().map((author) => ({
-      id: author.id,
-      name: author.name,
-    }));
+    return this.authorsService
+      .findAll()
+      .map((author) => this.toResponse(author));
   }
 
   @Get(':id')
@@ -56,10 +53,7 @@ export class AuthorsController {
   })
   findById(@Param('id') id: string) {
     const author = this.authorsService.findById(+id);
-    return {
-      id: author.id,
-      name: author.name,
-    };
+    return this.toResponse(author);
   }
 
   @Delete(':id')
@@ -75,5 +69,12 @@ export class AuthorsController {
   })
   delete(@Param('id') id: string) {
     return this.authorsService.delete(+id);
+  }
+
+  private toResponse(author: Author) {
+    return {
+      id: author.id,
+      name: author.name,
+    };
   }
 }

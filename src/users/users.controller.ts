@@ -10,6 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -24,7 +25,8 @@ export class UsersController {
   @ApiResponse({ status: 409, description: '利用者がすでに登録されている' })
   @ApiResponse({ status: 422, description: '入力値が不正' })
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const user = this.usersService.create(createUserDto);
+    return this.toResponse(user);
   }
 
   @Get()
@@ -34,7 +36,7 @@ export class UsersController {
   })
   @ApiResponse({ status: 200, description: '取得成功' })
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll().map((user) => this.toResponse(user));
   }
 
   @Get(':id')
@@ -48,7 +50,8 @@ export class UsersController {
     description: '指定したIDの利用者は登録されていない',
   })
   findById(@Param('id') id: string) {
-    return this.usersService.findById(+id);
+    const user = this.usersService.findById(+id);
+    return this.toResponse(user);
   }
 
   @Delete(':id')
@@ -64,5 +67,12 @@ export class UsersController {
   })
   delete(@Param('id') id: string) {
     return this.usersService.delete(+id);
+  }
+
+  private toResponse(user: User) {
+    return {
+      id: user.id,
+      name: user.name,
+    };
   }
 }

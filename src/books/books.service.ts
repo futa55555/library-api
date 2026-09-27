@@ -26,13 +26,11 @@ export class BooksService {
     const publisher = this.publishersService.findById(
       createBookDto.publisherId,
     );
-
     const createBookInput: CreateBookInput = {
-      title: createBookDto.title,
       author,
       publisher,
+      title: createBookDto.title,
     };
-
     try {
       return this.booksRepository.create(createBookInput);
     } catch (error) {

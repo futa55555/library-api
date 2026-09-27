@@ -24,9 +24,9 @@ export class BooksRepository {
     }
     const book = new Book(
       this.nextId++,
-      createBookInput.title,
       createBookInput.author,
       createBookInput.publisher,
+      createBookInput.title,
     );
     this.books.push(book);
     return book;

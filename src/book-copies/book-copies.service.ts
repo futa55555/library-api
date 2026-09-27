@@ -17,11 +17,9 @@ export class BookCopiesService {
 
   create(createBookCopyDto: CreateBookCopyDto): BookCopy {
     const book = this.booksService.findById(createBookCopyDto.bookId);
-
     const createBookCopyInput: CreateBookCopyInput = {
       book,
     };
-
     return this.bookCopiesRepository.create(createBookCopyInput);
   }
 
