@@ -14,7 +14,20 @@ export class PersonName {
     this._givenName = givenName;
   }
 
+  private get familyName(): string {
+    return this._familyName;
+  }
+  private get givenName(): string {
+    return this._givenName;
+  }
   get fullName(): string {
     return this._familyName + ' ' + this._givenName;
+  }
+
+  equals(other: PersonName): boolean {
+    return (
+      this._familyName === other.familyName &&
+      this._givenName === other.givenName
+    );
   }
 }
